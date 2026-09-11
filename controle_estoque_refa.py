@@ -68,8 +68,28 @@ def cadastrar_produto():
 
     print("Produto atualizado!")
     exibir_produto(novo_produto)
-    
-    
+
+
+def excluir_produto():
+
+    removido = False
+
+    nome = input("\nDigite o nome do produto que vai ser excluido: ").strip()
+
+    produto = buscar_produto(nome)
+
+    if produto is None:
+        print("\nProduto não existente. Digite um produto válido!")
+        return
+
+    if produto["quantidade"] == 0:
+        estoque.remove(produto)
+        print("\nProduto removido com sucesso!")
+        return
+
+    print("\nO produto não pode ser excluído, quantidade acima de 0")
+
+            
 def registrar_entrada():
     nome = input("\nDigite o nome do produto para registrar uma entrada: ").strip()
 
@@ -134,7 +154,8 @@ def iniciar_sistema():
             "\n2 - Registrar entrada de produto"
             "\n3 - Registrar saída de produto"
             "\n4 - Cadastrar novo produto"
-            "\n5 - Sair do sistema"
+            "\n5 - Excluir produto"
+            "\n6 - Sair do sistema"
         )
         try:
             opcao = int(input("\nDigite a opção que deseja: "))
@@ -152,6 +173,9 @@ def iniciar_sistema():
                 cadastrar_produto()
 
             elif opcao == 5:
+                excluir_produto()
+        
+            elif opcao == 6:
                 break
 
             else:
