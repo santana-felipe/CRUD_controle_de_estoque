@@ -1,8 +1,28 @@
-estoque = [
-    {"nome": "Mouse", "quantidade": 10, "preco": 45},
-    {"nome": "Teclado", "quantidade": 24, "preco": 80},
-    {"nome": "Monitor", "quantidade": 15, "preco": 550}
-]
+import json 
+import os
+
+def carregar_estoque():
+
+    try:
+
+        if os.path.isfile("estoque.json"): # Verificando se o arquivo existe
+
+            with open("estoque.json", "r", encoding="utf-8") as arquivo: # "r" - lendo o arquivo
+                produtos = json.load(arquivo)
+                return produtos
+
+        return []
+
+    except json.JSONDecodeError:
+        print("\nNenhum produto cadastrado! Adicione um produto.")
+        return []
+
+
+estoque = carregar_estoque()
+
+def salvar_estoque():
+    with open("estoque.json", "w", encoding="utf-8") as arquivo:
+        json.dump(estoque, arquivo, ensure_ascii=False, indent=4 )
 
 
 def exibir_produto (produto):
@@ -66,7 +86,9 @@ def cadastrar_produto():
 
     estoque.append(novo_produto)
 
-    print("Produto atualizado!")
+    salvar_estoque()
+
+    print("\nProduto cadastrado com sucesso!")
     exibir_produto(novo_produto)
 
 
@@ -141,7 +163,7 @@ def registrar_saida ():
         
     except ValueError:
 
-        print("Digite uma quantidade válida")
+        print("Digite uma quantidade válida")  
 
 def iniciar_sistema():
     while True:
