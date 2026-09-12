@@ -35,23 +35,27 @@ def exibir_produto (produto):
     print(
         f"\nProduto: {produto['nome']}"
         f"\nQuantidade: {produto['quantidade']}"
-        f"\nPreço: R${produto['preco']:.2f}"   
+        f"\nPreço: R${produto['preco']:.2f}".replace(".", ",")   
     )
 
 def visualizar_estoque():
-    for produto in estoque:
+        
         if not estoque:
+
             print("\nNenhum produto cadastrado! Adicione um produto.")
+            return
 
         print("===========ESTOQUE ATUAL===========")
 
-        exibir_produto(produto)
+        for produto in estoque:
 
-        print("===================================")
+            exibir_produto(produto)
 
-def buscar_produto(id_produto):
+            print("===================================")
+
+def buscar_produto_nome(nome):
     for produto in estoque:
-        if produto["id"] == id_produto:
+        if produto["nome"].lower() == nome.lower():
             return produto
 
     return None
@@ -59,7 +63,7 @@ def buscar_produto(id_produto):
 def cadastrar_produto():
     nome = str(input("\nQual o nome do produto que vai ser cadastrado: ").strip())
 
-    produto = buscar_produto(nome)
+    produto = buscar_produto_nome(nome)
 
     if produto is None:
         try:
@@ -77,7 +81,7 @@ def cadastrar_produto():
         return
 
     try:
-        valor_produto = float(input("Digite o valor do produto: R$").replace(",", "."))
+        valor_produto = float(input("\nDigite o valor do produto: R$").replace(",", "."))
 
         if valor_produto < 0:
             print("\nDigite um valor maior que zero")
@@ -104,11 +108,9 @@ def cadastrar_produto():
 
 def excluir_produto():
 
-    removido = False
-
     nome = input("\nDigite o nome do produto que vai ser excluido: ").strip()
 
-    produto = buscar_produto(nome)
+    produto = buscar_produto_nome(nome)
 
     if produto is None:
         print("\nProduto não existente. Digite um produto válido!")
@@ -116,6 +118,10 @@ def excluir_produto():
 
     if produto["quantidade"] == 0:
         estoque.remove(produto)
+        salvar_estoque()
+
+        print(estoque)
+
         print("\nProduto removido com sucesso!")
         return
 
@@ -125,7 +131,7 @@ def excluir_produto():
 def registrar_entrada():
     nome = input("\nDigite o nome do produto para registrar uma entrada: ").strip()
 
-    produto = buscar_produto(nome)
+    produto = buscar_produto_nome(nome)
 
     if produto is None:
         print("\nProduto não encontrado! Digite um produto válido")
@@ -149,7 +155,7 @@ def registrar_entrada():
 def registrar_saida ():
     nome = input("\nDigite o nome do produto para registar uma saida: ").strip()
 
-    produto = buscar_produto(nome)
+    produto = buscar_produto_nome(nome)
 
     if produto is None:
         print("\nProduto não encontrado! Digite um produto válido!")
