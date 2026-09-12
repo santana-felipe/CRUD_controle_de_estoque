@@ -1,6 +1,12 @@
 import json 
 import os
 
+def gerar_id():
+    if not estoque:
+        return 1
+
+    return max(produto["id"] for produto in estoque) + 1
+
 def carregar_estoque():
 
     try:
@@ -21,8 +27,8 @@ def carregar_estoque():
 estoque = carregar_estoque()
 
 def salvar_estoque():
-    with open("estoque.json", "w", encoding="utf-8") as arquivo:
-        json.dump(estoque, arquivo, ensure_ascii=False, indent=4 )
+    with open("estoque.json", "w", encoding="utf-8") as arquivo: # "W": Vai abrir o arquivo para escrever algo
+        json.dump(estoque, arquivo, ensure_ascii=False, indent=4 ) #ensure_ascii=False: serve para manter os acentos
 
 
 def exibir_produto (produto):
@@ -33,16 +39,19 @@ def exibir_produto (produto):
     )
 
 def visualizar_estoque():
-
-    print("===========ESTOQUE ATUAL===========")
     for produto in estoque:
+        if not estoque:
+            print("\nNenhum produto cadastrado! Adicione um produto.")
+
+        print("===========ESTOQUE ATUAL===========")
+
         exibir_produto(produto)
 
-    print("===================================")
+        print("===================================")
 
-def buscar_produto(nome):
+def buscar_produto(id_produto):
     for produto in estoque:
-        if produto["nome"].lower() == nome.lower():
+        if produto["id"] == id_produto:
             return produto
 
     return None
@@ -79,6 +88,7 @@ def cadastrar_produto():
         return
 
     novo_produto = {
+        "id": gerar_id(),
         "nome": nome,
         "quantidade": qtd_produto,
         "preco": valor_produto,
