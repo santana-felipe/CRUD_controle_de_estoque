@@ -1,8 +1,8 @@
 [
     {
-        "id": 2,
-        "nome": "Garrafa café",
-        "quantidade": 12,
-        "preco": 34.9
+        "id": 1,
+        "nome": "Blusa",
+        "quantidade": 10,
+        "preco": 26.99
     }
 ]

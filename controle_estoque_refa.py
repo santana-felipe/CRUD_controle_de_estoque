@@ -27,7 +27,7 @@ def carregar_estoque():
 estoque = carregar_estoque()
 
 def salvar_estoque():
-    with open("estoque.json", "w", encoding="utf-8") as arquivo: # "W": Vai abrir o arquivo para escrever algo
+    with open(r"C:\Users\Felipe\Documents\Projetos\estoque.json", "w", encoding="utf-8") as arquivo: # "W": Vai abrir o arquivo para escrever algo
         json.dump(estoque, arquivo, ensure_ascii=False, indent=4 ) #ensure_ascii=False: serve para manter os acentos
 
 
@@ -120,7 +120,6 @@ def excluir_produto():
         estoque.remove(produto)
         salvar_estoque()
 
-        print(estoque)
 
         print("\nProduto removido com sucesso!")
         return
@@ -145,6 +144,7 @@ def registrar_entrada():
             return
 
         produto["quantidade"] += qtd_entrada
+        salvar_estoque()
 
         print("Produto atualizado!")
         exibir_produto(nome)
@@ -173,6 +173,7 @@ def registrar_saida ():
             return
 
         produto["quantidade"] -= qtd_saida
+        salvar_estoque()
 
         print("Produto atualizado!")
         exibir_produto(produto)
